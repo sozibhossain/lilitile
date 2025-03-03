@@ -8,6 +8,8 @@ const environments = [
   { id: "kitchen", icon: "/icons/kitchen.png", image: "/bedroom_old2.png" },
   { id: "bedroom", icon: "/icons/bedroom.png", image: "/bathroom.png" },
   { id: "office", icon: "/icons/office.png", image: "/commercial_old.png" },
+  { id: "living-room", icon: "/icons/office.png", image: "/living_room.png" },
+  { id: "kitchen", icon: "/icons/office.png", image: "/kitchen.png" },
 ];
 
 interface Props {
@@ -113,7 +115,7 @@ ${currentSvg.paths
         )}
 
         <div
-          className="absolute inset-0 border-[5px] border-red-600"
+          className="absolute inset-0 "
           style={{
             backgroundImage: `url(${svgBackground})`,
             backgroundSize: "cover",
@@ -125,7 +127,7 @@ ${currentSvg.paths
             alt="Environment"
             fill
             style={{ objectFit: "cover" }}
-            className=""
+            className=" "
           />
         </div>
       </div>
