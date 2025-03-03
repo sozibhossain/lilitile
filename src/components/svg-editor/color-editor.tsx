@@ -19,15 +19,32 @@ export function ColorEditor({ svg, showBorders, setShowBorders, onColorSelect }:
   const [selectedPathId, setSelectedPathId] = useState<string | null>(null)
   const [pathColors, setPathColors] = useState<Record<string, string>>({})
 
-  const handlePathSelect = useCallback((pathId: string) => {
-    setSelectedPathId(pathId);
+//  pathSelect here======================>
+ const handlePathSelect = useCallback((pathId: string) => {
+  const selectedPath = svg.paths.find((p) => p.id === pathId);
+  if (!selectedPath) return;
 
-    // Automatically assign color from SVG path fill (if not already stored)
-    setPathColors((prev) => ({
-      ...prev,
-      [pathId]: prev[pathId] || svg.paths.find((p) => p.id === pathId)?.fill || "red",
-    }));
-  }, [svg.paths]);
+  const selectedFillColor = selectedPath.fill || "red"; // Default to "red" if no fill color
+
+  // Find all paths with the same color
+  const matchingPaths = svg.paths
+    .filter((p) => p.fill === selectedFillColor)
+    .map((p) => p.id);
+
+  setSelectedPathId((prevSelected) =>
+    prevSelected === pathId ? null : pathId
+  );
+
+  setPathColors((prev) => {
+    const updatedColors = { ...prev };
+    matchingPaths.forEach((id) => {
+      updatedColors[id] = updatedColors[id] || selectedFillColor;
+    });
+    return updatedColors;
+  });
+}, [svg.paths]);
+
+
 
 
   const handleSave = () => {

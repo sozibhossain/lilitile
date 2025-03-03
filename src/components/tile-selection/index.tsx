@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 
@@ -10,11 +10,13 @@ interface Tile {
 	collection: string
 	svg: string
 	preview?: string
+	
 }
 
 interface TileSelectionProps {
 	onTileSelect: (tile: Tile) => void
 	selectedTile: Tile | null
+	category: string
 }
 
 // Sample geometric SVG tiles
@@ -4080,62 +4082,27 @@ z"/>
 	// Add more geometric patterns as needed
 ]
 
-export function TileSelection({ onTileSelect, selectedTile }: TileSelectionProps) {
-	const [selectedCollection, setSelectedCollection] = useState<string>("Geometric")
+export function TileSelection({ onTileSelect, selectedTile, category }: TileSelectionProps) {
+	// Filter tiles by selected category
+	const filteredTiles = tiles.filter((tile) => tile.collection.toLowerCase() === category.toLowerCase())
 
-	// Filter tiles by selected collection
-	const filteredTiles = tiles.filter((tile) => tile.collection === selectedCollection)
-
-	// Function to handle tile selection
-	const handleTileSelect = (tile: Tile) => {
-		// Select all tiles with the same SVG path
-		const sameDesignTiles = filteredTiles.filter((t) => t.svg === tile.svg)
-
-		// Select all same SVG tiles
-		sameDesignTiles.forEach((t) => onTileSelect(t))
-	}
-
-	// Click Event for SVG
-	const handleSvgClick = (e: React.MouseEvent<HTMLDivElement>, tile: Tile) => {
-		e.stopPropagation();
-		handleTileSelect(tile);
-	};
 	return (
 		<ScrollArea className="h-full">
 			<div className="p-4 space-y-4">
-				{/* Collections Filter */}
-				<div className="flex flex-wrap gap-2">
-					<button
-						onClick={() => setSelectedCollection("Geometric")}
-						className={cn(
-							"px-3 py-1 text-sm rounded-full transition-colors",
-							selectedCollection === "Geometric"
-								? "bg-primary text-primary-foreground"
-								: "bg-secondary hover:bg-secondary/80"
-						)}
-					>
-						Geometric
-					</button>
-				</div>
-
 				{/* Tiles Grid */}
 				<div className="grid grid-cols-2 gap-4">
 					{filteredTiles.map((tile) => (
 						<button
 							key={tile.id}
-							onClick={() => handleTileSelect(tile)}
+							onClick={() => onTileSelect(tile)}
 							className={cn(
 								"relative aspect-square rounded-lg overflow-hidden border-2 transition-all p-4 bg-white",
-								selectedTile?.svg === tile.svg
+								selectedTile?.id === tile.id
 									? "border-primary shadow-lg scale-[0.98]"
 									: "border-border hover:border-primary/50",
 							)}
 						>
-							<div
-								className="w-full h-full"
-								dangerouslySetInnerHTML={{ __html: tile.svg }}
-								onClick={(e) => handleSvgClick(e, tile)} // Click on SVG Path
-							/>
+							<div className="w-full h-full" dangerouslySetInnerHTML={{ __html: tile.svg }} />
 							<div className="absolute bottom-0 left-0 right-0 bg-background/80 backdrop-blur-sm p-2">
 								<p className="text-sm font-medium text-center truncate">{tile.name}</p>
 							</div>
@@ -4146,5 +4113,6 @@ export function TileSelection({ onTileSelect, selectedTile }: TileSelectionProps
 		</ScrollArea>
 	)
 }
+
 
 
