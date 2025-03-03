@@ -1,48 +1,46 @@
+import * as cheerio from "cheerio";
+
 interface PathData {
-  id: string
-  d: string
-  fill?: string
-  originalFill?: string
+  id: string;
+  d: string;
+  fill?: string;
+  originalFill?: string;
 }
 
 interface SvgData {
-  id: string
-  name: string
-  viewBox: string
-  width: string
-  height: string
-  paths: PathData[]
+  id: string;
+  name: string;
+  viewBox: string;
+  width: string;
+  height: string;
+  paths: PathData[];
 }
 
 export function parseSvgString(svgString: string, svgId: string): SvgData {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(svgString, "image/svg+xml")
-  const svgElement = doc.querySelector("svg")
+  const $ = cheerio.load(svgString, { xmlMode: true });
+  const svgElement = $("svg");
 
-  if (!svgElement) {
-    throw new Error("Invalid SVG string")
+  if (!svgElement.length) {
+    throw new Error("Invalid SVG string");
   }
 
-  const paths: PathData[] = []
-  const pathElements = svgElement.querySelectorAll("path")
-
-  pathElements.forEach((path, index) => {
+  const paths: PathData[] = [];
+  svgElement.find("path").each((index, path) => {
     const pathData: PathData = {
-      id: path.id || `path-${index}`,
-      d: path.getAttribute("d") || "",
-      fill: path.getAttribute("fill") || undefined,
-      originalFill: path.getAttribute("fill") || undefined,
-    }
-    paths.push(pathData)
-  })
+      id: $(path).attr("id") || `path-${index}`,
+      d: $(path).attr("d") || "",
+      fill: $(path).attr("fill") || undefined,
+      originalFill: $(path).attr("fill") || undefined,
+    };
+    paths.push(pathData);
+  });
 
   return {
     id: svgId,
     name: svgId,
-    viewBox: svgElement.getAttribute("viewBox") || "0 0 100 100",
-    width: svgElement.getAttribute("width") || "100%",
-    height: svgElement.getAttribute("height") || "100%",
+    viewBox: svgElement.attr("viewBox") || "0 0 100 100",
+    width: svgElement.attr("width") || "100%",
+    height: svgElement.attr("height") || "100%",
     paths,
-  }
+  };
 }
-
