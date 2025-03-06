@@ -20,6 +20,8 @@ interface TileSelectionProps {
 	category: string
 }
 
+console.log(tiles)
+
 
 
 export function TileSelection({ onTileSelect, selectedTile, category }: TileSelectionProps) {
