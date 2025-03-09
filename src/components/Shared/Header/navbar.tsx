@@ -22,6 +22,8 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -39,16 +41,18 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="bg-white">
-      <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
+    <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-lg bg-white/5" >
+      <nav aria-label="Global" className="mx-auto flex container items-center justify-between py-6">
         <div className="flex lg:flex-1">
           <a href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            {/* <img
+            <Image
               alt=""
-              src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+              src="/logo.png"
+              width={47}
+              height={47}
               className="h-8 w-auto"
-            /> */}
+            />
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -62,6 +66,9 @@ export default function Navbar() {
           </button>
         </div>
         <PopoverGroup className="hidden lg:flex lg:gap-x-12">
+          <a href="#" className="text-sm/6 font-semibold text-gray-900 hover:text-primary-hover">
+            Home
+          </a>
           <Popover className="relative">
             <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
               Product
@@ -106,19 +113,17 @@ export default function Navbar() {
             </PopoverPanel>
           </Popover>
 
-          <a href="#" className="text-sm/6 font-semibold text-gray-900 hover:text-primary-hover">
-            Features
+
+          <a href="#" className="text-sm/6 font-semibold text-gray-900">
+            Gallery
           </a>
           <a href="#" className="text-sm/6 font-semibold text-gray-900">
-            Marketplace
-          </a>
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
-            Company
+            Blog
           </a>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="#" className="text-sm/6 font-semibold text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
+            <Button>Log in</Button>
           </a>
         </div>
       </nav>
@@ -128,11 +133,13 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              {/* <img
+              <Image
                 alt=""
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                src="/logo.png"
+                width={47}
+                height={47}
                 className="h-8 w-auto"
-              /> */}
+              />
             </a>
             <button
               type="button"

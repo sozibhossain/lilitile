@@ -1,5 +1,15 @@
 import type { Metadata } from "next";
 import "../../app/globals.css";
+import { Poppins } from 'next/font/google';
+import AppProvider from "@/components/providers/AppProviders";
+import Navbar from "@/components/Shared/Header/navbar";
+import Footer from "@/components/Shared/Footer/Footer";
+
+const poppins = Poppins({
+    subsets: ['latin'],
+    weight: ['400', '700'], // Add desired font weights
+    variable: '--font-poppins', // Optional: Define a CSS variable
+});
 
 
 
@@ -14,12 +24,19 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body
+        <AppProvider>
+            <html lang="en">
+                <body className={poppins.className}>
+                    <div>
+                        <Navbar />
+                    </div>
+                    {children}
 
-            >
-                {children}
-            </body>
-        </html>
+                    <div>
+                        <Footer />
+                    </div>
+                </body>
+            </html>
+        </AppProvider>
     );
 }
