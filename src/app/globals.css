@@ -8,6 +8,16 @@
   }
 }
 
+.container{
+  margin: 0 auto;
+  width: 1170px;
+  max-width: 96%;
+}
+
+section{
+  padding: 60px 0 60px 0;
+}
+
 
 
 @layer base {
